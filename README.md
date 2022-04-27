@@ -1,2 +1,10 @@
 # fluent-bit-yandex-cloud
-The project launches fluent bit on Yandex Cloud virtual machines. The project uses the official Fluent Bit app for Yandex Cloud Logging.
+The project runs Fluent Bit with the included Fluent Bit application for Yandex Cloud Logging.
+
+---
+
+### Useful links
+
+---
+
+[Fluent Bit plugin for Yandex Cloud Logging](https://github.com/yandex-cloud/fluent-bit-plugin-yandex)
