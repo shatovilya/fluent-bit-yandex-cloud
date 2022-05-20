@@ -1,0 +1,46 @@
+version: '3.7'
+x-log: &logging
+  logging:
+      driver: fluentd
+      options:
+        fluentd-address: localhost:24224
+        tag: docker.log.test
+
+services:
+  fluentbit:
+    container_name: fluentbit
+    image: cr.yandex/yc/fluent-bit-plugin-yandex:v1.0.3-fluent-bit-1.8.6
+    deploy:
+      resources:
+        limits:
+          cpus: '0.4'
+          memory: 2048M
+        reservations:
+          memory: 300M
+    ports:
+      - 24224:24224
+      - 24224:24224/udp
+    restart: ${RESTART_POLICY-always}
+    environment:
+      - YC_GROUP_ID=${YC_GROUP_ID}
+    volumes:
+      - ./conf/fluent-bit.conf:/fluent-bit/etc/fluent-bit.conf
+      - ./conf/filter.conf:/fluent-bit/etc/filter.conf
+      - ./conf/input.conf:/fluent-bit/etc/input.conf
+      - ./conf/output.conf:/fluent-bit/etc/output.conf
+      - ./conf/parsers.conf:/fluent-bit/etc/parsers.conf
+      - ./key.json:/etc/secret/key.json
+
+  nginx:
+    image: nginx
+    container_name: webserver
+    restart: unless-stopped
+    logging:
+        driver: fluentd
+        options:
+          fluentd-address: localhost:24224
+          tag: nginx.access.test
+    ports:
+      - 80:80
+    depends_on:
+      - fluentbit
