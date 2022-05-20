@@ -29,7 +29,7 @@ services:
       - ./conf/input.conf:/fluent-bit/etc/input.conf
       - ./conf/output.conf:/fluent-bit/etc/output.conf
       - ./conf/parsers.conf:/fluent-bit/etc/parsers.conf
-      - ./secret/key.json:/etc/secret/key.json
+      - ./key.json:/etc/secret/key.json
 
   nginx:
     image: nginx
