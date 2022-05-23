@@ -27,7 +27,7 @@ cp ./.env_temp ./.env
 
 ```
 
-3. Add iam-key-file 
+3. Add iam-key-file (for version iam-key authorization)
 
 Generate it via the Yandex Cloud command line interface.
 
@@ -36,8 +36,17 @@ Generate it via the Yandex Cloud command line interface.
 
 4. Run the project
 
+For version iam-key authorization
+
 ```bash
-docker-compose up -d
+docker-compose up -f docker-compose_iam.yaml -d
+
+```
+
+For version instance-service-account
+
+```bash
+docker-compose up -f docker-compose_instance-service-account.yaml -d
 
 ```
 

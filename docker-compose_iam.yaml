@@ -1,0 +1,27 @@
+version: '3.7'
+services:
+  fluentbit:
+    container_name: fluentbit
+    image: cr.yandex/yc/fluent-bit-plugin-yandex:v1.0.3-fluent-bit-1.8.6
+    deploy:
+      resources:
+        limits:
+          cpus: '0.2'
+          memory: 150M
+        reservations:
+          memory: 50M
+    ports:
+      - ${FLUENTBIT_PORT:-24224}:24224
+      - ${FLUENTBIT_PORT:-24224}:24224/udp
+    restart: ${RESTART_POLICY:-always}
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      - YC_GROUP_ID=${YC_GROUP_ID}
+    volumes:
+      - ./conf/fluent-bit.conf:/fluent-bit/etc/fluent-bit.conf
+      - ./conf/filter.conf:/fluent-bit/etc/filter.conf
+      - ./conf/input.conf:/fluent-bit/etc/input.conf
+      - ./conf/output.conf:/fluent-bit/etc/output.conf
+      - ./conf/parsers.conf:/fluent-bit/etc/parsers.conf
+      - ./key.json:/etc/secret/key.json
